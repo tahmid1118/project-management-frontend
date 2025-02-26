@@ -1,14 +1,27 @@
 "use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 import { BoardData } from "../data/data";
 import { Button } from "./ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
 import { Input } from "./ui/input";
 
 interface AddTaskProps {
@@ -16,15 +29,26 @@ interface AddTaskProps {
   setBoardData: React.Dispatch<React.SetStateAction<BoardData>>;
 }
 
+const taskSchema = z.object({
+  taskContent: z
+    .string()
+    .min(1, "Task content is required")
+    .max(180, "Task content cannot exceed 180 characters"),
+});
+
+type TaskFormInputs = z.infer<typeof taskSchema>;
+
 const AddTask: React.FC<AddTaskProps> = ({ boardData, setBoardData }) => {
-  const [taskContent, setTaskContent] = useState("");
   const [open, setOpen] = useState(false);
 
-  const handleAddTask = () => {
-    if (!taskContent.trim()) return;
+  const form = useForm<TaskFormInputs>({
+    resolver: zodResolver(taskSchema),
+    defaultValues: { taskContent: "" },
+  });
 
+  const onSubmit = (data: TaskFormInputs) => {
     const newTaskId = `task-${Date.now()}`;
-    const newTask = { id: newTaskId, content: taskContent };
+    const newTask = { id: newTaskId, content: data.taskContent };
 
     const updatedTasks = {
       ...boardData.tasks,
@@ -45,7 +69,7 @@ const AddTask: React.FC<AddTaskProps> = ({ boardData, setBoardData }) => {
       columns: updatedColumns,
     });
 
-    setTaskContent("");
+    form.reset();
     setOpen(false);
   };
 
@@ -59,20 +83,38 @@ const AddTask: React.FC<AddTaskProps> = ({ boardData, setBoardData }) => {
       <DialogContent className="bg-gray-800 text-white border-gray-700">
         <DialogHeader>
           <DialogTitle className="text-xl">Add a New Task</DialogTitle>
+          <DialogDescription>Enter task details below</DialogDescription>
         </DialogHeader>
-        <Input
-          type="text"
-          value={taskContent}
-          onChange={(e) => setTaskContent(e.target.value)}
-          placeholder="Enter task title..."
-          className="p-2 rounded bg-gray-700 text-white"
-        />
-        <Button
-          onClick={handleAddTask}
-          className="bg-[#27667B] hover:bg-[#143D60] transition text-white"
-        >
-          Submit
-        </Button>
+        <Form {...form}>
+          <FormField
+            control={form.control}
+            name="taskContent"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Task Title</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Enter task title..."
+                    {...field}
+                    className={`p-2 rounded bg-gray-700 text-white border ${
+                      form.formState.errors.taskContent
+                        ? "border-red-500 focus:ring-red-500 focus:border-red-500"
+                        : "border-gray-600 focus:ring-[#143D60] focus:border-[#143D60]"
+                    }`}
+                  />
+                </FormControl>
+                <FormMessage className="text-red-500" />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            onClick={form.handleSubmit(onSubmit)}
+            className="bg-[#27667B] hover:bg-[#143D60] transition text-white"
+          >
+            Submit
+          </Button>
+        </Form>
       </DialogContent>
     </Dialog>
   );

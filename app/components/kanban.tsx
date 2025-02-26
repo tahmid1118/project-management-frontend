@@ -108,7 +108,7 @@ const KanbanBoard: React.FC = () => {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            className="bg-gray-700 p-3 rounded-lg mb-2 text-white"
+                            className="bg-gray-700 p-3 rounded-lg mb-2 text-white h-[100px] break-words whitespace-normal"
                           >
                             {task.content}
                           </div>
