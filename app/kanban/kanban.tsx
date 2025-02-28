@@ -7,8 +7,8 @@ import {
 } from "@hello-pangea/dnd";
 import * as React from "react";
 import { useState } from "react";
+import AddTask from "../(components)/addTask";
 import { BoardData, initialData } from "../data/data";
-import AddTask from "./addTask";
 
 const KanbanBoard: React.FC = () => {
   const [boardData, setBoardData] = useState<BoardData>(initialData);

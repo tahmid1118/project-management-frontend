@@ -9,9 +9,9 @@ import { usePathname } from "next/navigation";
 import { toast } from "sonner"; // Import toast for displaying error messages
 import { useTranslation } from "../../app/i18n/client";
 import { cn } from "../../lib/utils";
-import { Button } from "../ui/button";
-import { Calendar } from "../ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { Button } from "./button";
+import { Calendar } from "./calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 interface CalendarDateRangePickerProps {
   className?: string;
   onChange?: (dates: string[] | undefined) => void;

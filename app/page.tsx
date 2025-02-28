@@ -1,12 +1,11 @@
-import type { NextPage } from "next";
-import KanbanBoard from "./components/kanban";
+import LoginPage from "./(auth)/login/page";
 
-const Home: NextPage = () => {
+// app/page.tsx
+const Page = async () => {
   return (
-    <div>
-      <KanbanBoard />
-    </div>
+    <>
+      <LoginPage />
+    </>
   );
 };
-
-export default Home;
+export default Page;

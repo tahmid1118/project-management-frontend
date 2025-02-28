@@ -76,7 +76,7 @@ const AddTask: React.FC<AddTaskProps> = ({ boardData, setBoardData }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-[#27667B] hover:bg-[#143D60] transition text-white">
+        <Button className="bg-[#246175] hover:bg-[#215668] transition text-white">
           Add Task
         </Button>
       </DialogTrigger>
@@ -96,14 +96,10 @@ const AddTask: React.FC<AddTaskProps> = ({ boardData, setBoardData }) => {
                   <Input
                     placeholder="Enter task title..."
                     {...field}
-                    className={`p-2 rounded bg-gray-700 text-white border ${
-                      form.formState.errors.taskContent
-                        ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                        : "border-gray-600 focus:ring-[#143D60] focus:border-[#143D60]"
-                    }`}
+                    className="p-2 rounded bg-gray-700 text-white"
                   />
                 </FormControl>
-                <FormMessage className="text-red-500" />
+                <FormMessage />
               </FormItem>
             )}
           />
