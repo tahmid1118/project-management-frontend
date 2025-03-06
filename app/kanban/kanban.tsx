@@ -73,7 +73,7 @@ const KanbanBoard: React.FC = () => {
   };
 
   return (
-    <div className="p-4 bg-gray-900 min-h-screen">
+    <div className="p-4 bg-gradient-to-r from-[#432c52] via-[#2a3b36] to-[#432c52] min-h-screen">
       <div className="p-4">
         <AddTask boardData={boardData} setBoardData={setBoardData} />
       </div>
@@ -108,7 +108,7 @@ const KanbanBoard: React.FC = () => {
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            className="bg-gray-700 p-3 rounded-lg mb-2 text-white h-[100px] break-words whitespace-normal"
+                            className="bg-white/10 backdrop-blur-md p-3 rounded-lg mb-2 text-white h-[100px] break-words whitespace-normal"
                           >
                             {task.content}
                           </div>

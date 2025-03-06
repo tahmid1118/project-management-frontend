@@ -76,7 +76,7 @@ const AddTask: React.FC<AddTaskProps> = ({ boardData, setBoardData }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-[#246175] hover:bg-[#215668] transition text-white">
+        <Button className="bg-[#27667B] hover:bg-[#143D60] transition text-white">
           Add Task
         </Button>
       </DialogTrigger>
