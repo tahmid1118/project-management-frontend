@@ -89,9 +89,9 @@ export default function TasksPage() {
     totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-center justify-end space-x-3">
-        {completedCount > 0 && (
+    <div className="p-6 space-y-4">
+      {completedCount > 0 && (
+        <div className="flex justify-end">
           <button
             onClick={() => setCompletedTasks(new Set())}
             className="flex items-center space-x-2 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
@@ -99,12 +99,8 @@ export default function TasksPage() {
             <FiTrash className="h-4 w-4" />
             <span>Clear Completed ({completedCount})</span>
           </button>
-        )}
-        <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-          <FiPlus className="h-4 w-4" />
-          <span>New Task</span>
-        </button>
-      </div>
+        </div>
+      )}
 
       {/* Filters */}
       <div className="bg-gray-800/70 backdrop-blur-md rounded-lg shadow-sm border border-gray-700 p-6">
@@ -191,10 +187,14 @@ export default function TasksPage() {
 
       {/* Tasks Checklist */}
       <div className="bg-gray-800/70 backdrop-blur-md rounded-lg shadow-sm border border-gray-700">
-        <div className="px-6 py-4 border-b border-gray-700">
+        <div className="px-6 py-4 border-b border-gray-700 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-white">
             Task Checklist ({filteredTasks.length})
           </h2>
+          <button className="flex items-center space-x-2 bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors text-sm">
+            <FiPlus className="h-4 w-4" />
+            <span>New Task</span>
+          </button>
         </div>
 
         <div className="divide-y divide-gray-700">
