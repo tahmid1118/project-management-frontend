@@ -3,10 +3,12 @@
 import { useState } from "react";
 import {
   FiCalendar,
+  FiCheck,
   FiFilter,
   FiFlag,
   FiPlus,
   FiSearch,
+  FiTrash,
   FiUser,
 } from "react-icons/fi";
 import { dummyMembers, initialBoardData, priorities } from "../data/data";
@@ -15,10 +17,12 @@ export default function TasksPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPriority, setSelectedPriority] = useState("All");
   const [selectedStatus, setSelectedStatus] = useState("All");
+  const [completedTasks, setCompletedTasks] = useState<Set<string>>(new Set());
 
   const allTasks = Object.values(initialBoardData.tasks);
 
   const getTaskStatus = (taskId: string) => {
+    if (completedTasks.has(taskId)) return "Done";
     return (
       Object.keys(initialBoardData.columns).find((colId) =>
         initialBoardData.columns[colId].taskIds.includes(taskId)
@@ -47,21 +51,55 @@ export default function TasksPage() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Done":
-        return "bg-green-100 text-green-800";
+        return "bg-green-500/20 text-green-400 border-green-500/30";
       case "In Progress":
-        return "bg-blue-100 text-blue-800";
+        return "bg-blue-500/20 text-blue-400 border-blue-500/30";
       case "In Review":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30";
       case "Not Started":
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-500/20 text-gray-400 border-gray-500/30";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-500/20 text-gray-400 border-gray-500/30";
     }
   };
 
+  const toggleTaskCompletion = (taskId: string) => {
+    setCompletedTasks((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(taskId)) {
+        newSet.delete(taskId);
+      } else {
+        newSet.add(taskId);
+      }
+      return newSet;
+    });
+  };
+
+  const deleteTask = (taskId: string) => {
+    setCompletedTasks((prev) => {
+      const newSet = new Set(prev);
+      newSet.delete(taskId);
+      return newSet;
+    });
+  };
+
+  const completedCount = completedTasks.size;
+  const totalCount = filteredTasks.length;
+  const completionPercentage =
+    totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+
   return (
     <div className="p-6 space-y-6">
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-end space-x-3">
+        {completedCount > 0 && (
+          <button
+            onClick={() => setCompletedTasks(new Set())}
+            className="flex items-center space-x-2 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors"
+          >
+            <FiTrash className="h-4 w-4" />
+            <span>Clear Completed ({completedCount})</span>
+          </button>
+        )}
         <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
           <FiPlus className="h-4 w-4" />
           <span>New Task</span>
@@ -117,11 +155,45 @@ export default function TasksPage() {
         </div>
       </div>
 
-      {/* Tasks List */}
+      {/* Progress Overview */}
+      <div className="bg-gray-800/70 backdrop-blur-md rounded-lg shadow-sm border border-gray-700 p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-4">
+            <h2 className="text-lg font-semibold text-white">Task Progress</h2>
+            {totalCount > 0 && (
+              <button
+                onClick={() => {
+                  if (completedCount === totalCount) {
+                    setCompletedTasks(new Set());
+                  } else {
+                    setCompletedTasks(
+                      new Set(filteredTasks.map((task) => task.id))
+                    );
+                  }
+                }}
+                className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                {completedCount === totalCount ? "Uncheck All" : "Check All"}
+              </button>
+            )}
+          </div>
+          <span className="text-sm text-gray-300">
+            {completedCount} of {totalCount} completed ({completionPercentage}%)
+          </span>
+        </div>
+        <div className="w-full bg-gray-700 rounded-full h-3">
+          <div
+            className="bg-gradient-to-r from-green-500 to-green-400 h-3 rounded-full transition-all duration-300"
+            style={{ width: `${completionPercentage}%` }}
+          ></div>
+        </div>
+      </div>
+
+      {/* Tasks Checklist */}
       <div className="bg-gray-800/70 backdrop-blur-md rounded-lg shadow-sm border border-gray-700">
         <div className="px-6 py-4 border-b border-gray-700">
           <h2 className="text-lg font-semibold text-white">
-            All Tasks ({filteredTasks.length})
+            Task Checklist ({filteredTasks.length})
           </h2>
         </div>
 
@@ -135,28 +207,56 @@ export default function TasksPage() {
             return (
               <div
                 key={task.id}
-                className="p-6 hover:bg-gray-700/30 transition-colors"
+                className={`p-6 hover:bg-gray-700/30 transition-all duration-200 ${
+                  completedTasks.has(task.id) ? "opacity-75 bg-gray-700/20" : ""
+                }`}
               >
-                <div className="flex items-start justify-between">
+                <div className="flex items-start space-x-4">
+                  {/* Checkbox */}
+                  <button
+                    onClick={() => toggleTaskCompletion(task.id)}
+                    className={`flex-shrink-0 w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all duration-200 ${
+                      completedTasks.has(task.id)
+                        ? "bg-green-500 border-green-500 text-white"
+                        : "border-gray-500 hover:border-green-400 hover:bg-green-400/10"
+                    }`}
+                  >
+                    {completedTasks.has(task.id) && (
+                      <FiCheck className="h-4 w-4" />
+                    )}
+                  </button>
+
                   <div className="flex-1">
                     <div className="flex items-center space-x-3 mb-2">
-                      <h3 className="text-lg font-medium text-white">
+                      <h3
+                        className={`text-lg font-medium transition-all duration-200 ${
+                          completedTasks.has(task.id)
+                            ? "text-gray-400 line-through"
+                            : "text-white"
+                        }`}
+                      >
                         {task.content}
                       </h3>
                       <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(taskStatus)}`}
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(taskStatus)}`}
                       >
                         {taskStatus}
                       </span>
                     </div>
 
                     {task.description && (
-                      <p className="text-sm text-gray-600 mb-3">
+                      <p
+                        className={`text-sm mb-3 transition-all duration-200 ${
+                          completedTasks.has(task.id)
+                            ? "text-gray-500"
+                            : "text-gray-300"
+                        }`}
+                      >
                         {task.description}
                       </p>
                     )}
 
-                    <div className="flex items-center space-x-6 text-sm text-gray-500">
+                    <div className="flex items-center space-x-6 text-sm text-gray-400">
                       {task.priority && (
                         <div className="flex items-center space-x-1">
                           <FiFlag
@@ -184,12 +284,13 @@ export default function TasksPage() {
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-2 ml-4">
-                    <button className="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                      Edit
-                    </button>
-                    <button className="text-red-600 hover:text-red-800 text-sm font-medium">
-                      Delete
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => deleteTask(task.id)}
+                      className="p-2 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+                      title="Delete task"
+                    >
+                      <FiTrash className="h-4 w-4" />
                     </button>
                   </div>
                 </div>
@@ -202,10 +303,10 @@ export default function TasksPage() {
               <div className="text-gray-400 mb-4">
                 <FiSearch className="h-12 w-12 mx-auto" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
+              <h3 className="text-lg font-medium text-white mb-2">
                 No tasks found
               </h3>
-              <p className="text-gray-500">
+              <p className="text-gray-400">
                 Try adjusting your search or filter criteria.
               </p>
             </div>
