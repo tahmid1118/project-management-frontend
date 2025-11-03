@@ -27,6 +27,7 @@ import { Input } from "./ui/input";
 interface AddTaskProps {
   boardData: BoardData;
   setBoardData: React.Dispatch<React.SetStateAction<BoardData>>;
+  columnId: string;
 }
 
 const taskSchema = z.object({
@@ -38,7 +39,11 @@ const taskSchema = z.object({
 
 type TaskFormInputs = z.infer<typeof taskSchema>;
 
-const AddTask: React.FC<AddTaskProps> = ({ boardData, setBoardData }) => {
+const AddTask: React.FC<AddTaskProps> = ({
+  boardData,
+  setBoardData,
+  columnId,
+}) => {
   const [open, setOpen] = useState(false);
 
   const form = useForm<TaskFormInputs>({
@@ -47,8 +52,13 @@ const AddTask: React.FC<AddTaskProps> = ({ boardData, setBoardData }) => {
   });
 
   const onSubmit = (data: TaskFormInputs) => {
-    const newTaskId = `task-${Date.now()}`;
-    const newTask = { id: newTaskId, content: data.taskContent };
+    const newTaskId = `task-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    const newTask = {
+      id: newTaskId,
+      content: data.taskContent,
+      assignees: [],
+      priority: "Clear",
+    };
 
     const updatedTasks = {
       ...boardData.tasks,
@@ -57,9 +67,9 @@ const AddTask: React.FC<AddTaskProps> = ({ boardData, setBoardData }) => {
 
     const updatedColumns = {
       ...boardData.columns,
-      "column-1": {
-        ...boardData.columns["column-1"],
-        taskIds: [...boardData.columns["column-1"].taskIds, newTaskId],
+      [columnId]: {
+        ...boardData.columns[columnId],
+        taskIds: [...boardData.columns[columnId].taskIds, newTaskId],
       },
     };
 
@@ -76,8 +86,8 @@ const AddTask: React.FC<AddTaskProps> = ({ boardData, setBoardData }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="bg-[#27667B] hover:bg-[#143D60] transition text-white">
-          Add Task
+        <Button className="bg-[#27667B] hover:bg-[#1f5364] transition text-white w-full mt-2">
+          + Add Task
         </Button>
       </DialogTrigger>
       <DialogContent className="bg-gray-800 text-white border-gray-700">
@@ -86,30 +96,31 @@ const AddTask: React.FC<AddTaskProps> = ({ boardData, setBoardData }) => {
           <DialogDescription>Enter task details below</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <FormField
-            control={form.control}
-            name="taskContent"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Task Title</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Enter task title..."
-                    {...field}
-                    className="p-2 rounded bg-gray-700 text-white"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button
-            type="submit"
-            onClick={form.handleSubmit(onSubmit)}
-            className="bg-[#27667B] hover:bg-[#143D60] transition text-white"
-          >
-            Submit
-          </Button>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="taskContent"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Task Title</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter task title..."
+                      {...field}
+                      className="p-2 rounded bg-gray-700 text-white"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              type="submit"
+              className="bg-[#27667B] hover:bg-[#143D60] transition text-white"
+            >
+              Submit
+            </Button>
+          </form>
         </Form>
       </DialogContent>
     </Dialog>

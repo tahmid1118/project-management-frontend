@@ -155,21 +155,20 @@ const Login: React.FC = () => {
               <FacebookIcon />
             </div>
             <p className="text-center text-gray-400 mt-4">
-              <a href="#" className="hover:underline">
+              <a href="/pmf/signup" className="hover:underline">
                 Create an account
               </a>
             </p>
           </div>
 
           {/* Right Side - Info Section */}
-          <div className="w-1/2 bg-white/0 backdrop-blur-md p-8 flex flex-col justify-center text-gray-300 rounded-r-lg relative">
-            <h3 className="text-2xl font-bold">What’s our Jobseekers Said.</h3>
+          <div className="w-1/2 bg-white/0 backdrop-blur-md p-8 flex flex-col justify-center text-gray-200 rounded-r-lg relative">
+            <h3 className="text-2xl font-bold">What’s our Scholars Said.</h3>
             <p className="mt-4 italic">
-              “Search and find your dream job is now easier than ever. Just
-              browse a job and apply if you need to.”
+              “A goal without a plan is just a wish.”
             </p>
-            <p className="mt-2 font-semibold">Mas Parjono</p>
-            <p className="text-sm">UI Designer at Google</p>
+            <p className="mt-2 font-semibold">Antoine de Saint-Exupéry</p>
+            {/* <p className="text-sm">UI Designer at Google</p> */}
 
             {/* Slideshow Effect */}
             <div className="relative w-full overflow-hidden mt-6 h-[120px]">
@@ -180,7 +179,7 @@ const Login: React.FC = () => {
                   animate={{ x: 0, opacity: 1 }}
                   exit={{ x: "-100%", opacity: 0 }}
                   transition={{ duration: 0.6, ease: "easeInOut" }}
-                  className="absolute w-full p-4 bg-white/10  text-gray-300 rounded-lg"
+                  className="absolute w-full p-4 bg-white/10  text-gray-200 rounded-lg"
                 >
                   <h4 className="font-semibold">
                     {messages[currentMessage].title}

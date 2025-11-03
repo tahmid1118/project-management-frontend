@@ -2,7 +2,7 @@
 
 export default function Loader() {
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-[#917173] via-[#2a3b36] to-[#432c52]">
+    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-[#432c52] via-[#2a3b36] to-[#432c52]">
       {/* Loader */}
       <div className="relative flex justify-center items-center">
         <div className="absolute w-[140px] h-[55px] bg-white/10 backdrop-blur-md border border-white/20 border-t-0 rounded-b-lg shadow-lg animate-tilt"></div>

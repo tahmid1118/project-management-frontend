@@ -1,16 +1,12 @@
-import { Metadata } from "next";
+"use client";
+
 import KanbanBoard from "./kanban";
 
-export const metadata: Metadata = {
-  title: "Kanban Board",
-  description: "Kanban Board page",
-};
-
-const KanbanBoardPage = async () => {
+const KanbanBoardPage = () => {
   return (
-    <>
+    <div className="h-full">
       <KanbanBoard />
-    </>
+    </div>
   );
 };
 
