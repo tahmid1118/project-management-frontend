@@ -19,7 +19,7 @@ export default function AppLayout({ children }: AppLayoutProps) {
   }
 
   return (
-    <div className="flex h-screen bg-gradient-to-r from-[#432c52] via-[#2a3b36] to-[#432c52]">
+    <div className="flex h-screen bg-gradient-to-r from-gray-50 via-gray-100 to-gray-50 dark:from-[#432c52] dark:via-[#2a3b36] dark:to-[#432c52]">
       <Sidebar
         isCollapsed={isSidebarCollapsed}
         onToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)}

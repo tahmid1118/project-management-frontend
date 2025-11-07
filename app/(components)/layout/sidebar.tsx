@@ -30,17 +30,19 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
 
   return (
     <div
-      className={`flex h-screen flex-col bg-gray-900 transition-all duration-300 ${
+      className={`flex h-screen flex-col bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ${
         isCollapsed ? "w-16" : "w-64"
       }`}
     >
-      <div className="flex h-16 items-center justify-between border-b border-gray-700 px-4">
+      <div className="flex h-16 items-center justify-between border-b border-gray-200 dark:border-gray-700 px-4">
         {!isCollapsed && (
-          <h1 className="text-xl font-bold text-white">ProjectFlow</h1>
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+            ProjectFlow
+          </h1>
         )}
         <button
           onClick={onToggle}
-          className="rounded-lg p-2 text-gray-400 hover:bg-gray-800 hover:text-white transition-colors"
+          className="rounded-lg p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white transition-colors"
         >
           {isCollapsed ? (
             <span className="text-lg">→</span>
@@ -59,8 +61,8 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
               href={item.href}
               className={`group flex items-center rounded-md px-2 py-2 text-sm font-medium transition-colors ${
                 isActive
-                  ? "bg-gray-800 text-white"
-                  : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                  ? "bg-blue-50 dark:bg-gray-800 text-blue-600 dark:text-white"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white"
               }`}
               title={isCollapsed ? item.name : undefined}
             >
@@ -69,8 +71,8 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                   isCollapsed ? "mx-auto" : "mr-3"
                 } ${
                   isActive
-                    ? "text-white"
-                    : "text-gray-400 group-hover:text-white"
+                    ? "text-blue-700 dark:text-white"
+                    : "text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                 }`}
               />
               {!isCollapsed && item.name}

@@ -2,8 +2,16 @@
 
 import { useState } from "react";
 import { FiBell, FiLock, FiMoon, FiSave, FiSun, FiUser } from "react-icons/fi";
+import {
+  ThemedCard,
+  ThemedInput,
+  ThemedLabel,
+  ThemedSelect,
+} from "../(components)/layout/themed-container";
+import { useTheme } from "../context/ThemeContext";
 
 export default function SettingsPage() {
+  const { theme, setTheme } = useTheme();
   const [settings, setSettings] = useState({
     // Profile settings
     fullName: "John Doe",
@@ -17,7 +25,6 @@ export default function SettingsPage() {
     weeklyReports: false,
 
     // Appearance settings
-    theme: "light",
     language: "en",
     timezone: "UTC-5",
 
@@ -34,9 +41,7 @@ export default function SettingsPage() {
   };
 
   const handleSave = () => {
-    // Here you would typically save to your backend
     console.log("Saving settings:", settings);
-    // Show success message
   };
 
   return (
@@ -54,108 +59,93 @@ export default function SettingsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Settings Navigation */}
         <div className="lg:col-span-1">
-          <div className="bg-gray-800/70 backdrop-blur-md rounded-lg shadow-sm border border-gray-700 p-4">
+          <ThemedCard className="p-4">
             <nav className="space-y-1">
               <a
                 href="#profile"
-                className="flex items-center space-x-3 px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg"
+                className="flex items-center space-x-3 px-3 py-2 text-sm font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-600/20 rounded-lg"
               >
                 <FiUser className="h-4 w-4" />
                 <span>Profile</span>
               </a>
               <a
                 href="#notifications"
-                className="flex items-center space-x-3 px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700/30 rounded-lg"
+                className="flex items-center space-x-3 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/30 rounded-lg"
               >
                 <FiBell className="h-4 w-4" />
                 <span>Notifications</span>
               </a>
               <a
                 href="#appearance"
-                className="flex items-center space-x-3 px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700/30 rounded-lg"
+                className="flex items-center space-x-3 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/30 rounded-lg"
               >
                 <FiSun className="h-4 w-4" />
                 <span>Appearance</span>
               </a>
               <a
                 href="#privacy"
-                className="flex items-center space-x-3 px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700/30 rounded-lg"
+                className="flex items-center space-x-3 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/30 rounded-lg"
               >
                 <FiLock className="h-4 w-4" />
                 <span>Privacy</span>
               </a>
             </nav>
-          </div>
+          </ThemedCard>
         </div>
 
         {/* Settings Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Profile Settings */}
-          <div
-            id="profile"
-            className="bg-gray-800/70 backdrop-blur-md rounded-lg shadow-sm border border-gray-700 p-6"
-          >
-            <h2 className="text-lg font-semibold text-white mb-4">
+          <ThemedCard id="profile" className="p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Profile Information
             </h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Full Name
-                </label>
-                <input
+                <ThemedLabel>Full Name</ThemedLabel>
+                <ThemedInput
                   type="text"
                   value={settings.fullName}
                   onChange={(e) =>
                     handleSettingChange("fullName", e.target.value)
                   }
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Email Address
-                </label>
-                <input
+                <ThemedLabel>Email Address</ThemedLabel>
+                <ThemedInput
                   type="email"
                   value={settings.email}
                   onChange={(e) => handleSettingChange("email", e.target.value)}
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Job Title
-                </label>
-                <input
+                <ThemedLabel>Job Title</ThemedLabel>
+                <ThemedInput
                   type="text"
                   value={settings.jobTitle}
                   onChange={(e) =>
                     handleSettingChange("jobTitle", e.target.value)
                   }
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
               </div>
             </div>
-          </div>
+          </ThemedCard>
 
           {/* Notification Settings */}
-          <div
-            id="notifications"
-            className="bg-gray-800/70 backdrop-blur-md rounded-lg shadow-sm border border-gray-700 p-6"
-          >
-            <h2 className="text-lg font-semibold text-white mb-4">
+          <ThemedCard id="notifications" className="p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Notification Preferences
             </h2>
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-medium text-gray-900">
+                  <h3 className="text-sm font-medium text-gray-900 dark:text-white">
                     Email Notifications
                   </h3>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     Receive notifications via email
                   </p>
                 </div>
@@ -171,16 +161,16 @@ export default function SettingsPage() {
                     }
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
 
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-medium text-gray-900">
+                  <h3 className="text-sm font-medium text-gray-900 dark:text-white">
                     Push Notifications
                   </h3>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     Receive push notifications in browser
                   </p>
                 </div>
@@ -193,16 +183,16 @@ export default function SettingsPage() {
                     }
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
 
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-medium text-gray-900">
+                  <h3 className="text-sm font-medium text-gray-900 dark:text-white">
                     Task Reminders
                   </h3>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     Get reminded about upcoming deadlines
                   </p>
                 </div>
@@ -215,43 +205,38 @@ export default function SettingsPage() {
                     }
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
             </div>
-          </div>
+          </ThemedCard>
 
           {/* Appearance Settings */}
-          <div
-            id="appearance"
-            className="bg-gray-800/70 backdrop-blur-md rounded-lg shadow-sm border border-gray-700 p-6"
-          >
-            <h2 className="text-lg font-semibold text-white mb-4">
+          <ThemedCard id="appearance" className="p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Appearance
             </h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Theme
-                </label>
+                <ThemedLabel>Theme</ThemedLabel>
                 <div className="flex space-x-4">
                   <button
-                    onClick={() => handleSettingChange("theme", "light")}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg border ${
-                      settings.theme === "light"
-                        ? "border-blue-500 bg-blue-50 text-blue-700"
-                        : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                    onClick={() => setTheme("light")}
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg border transition-colors ${
+                      theme === "light"
+                        ? "border-blue-500 bg-blue-50 dark:bg-blue-600/20 text-blue-600 dark:text-blue-400"
+                        : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/30"
                     }`}
                   >
                     <FiSun className="h-4 w-4" />
                     <span>Light</span>
                   </button>
                   <button
-                    onClick={() => handleSettingChange("theme", "dark")}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg border ${
-                      settings.theme === "dark"
-                        ? "border-blue-500 bg-blue-50 text-blue-700"
-                        : "border-gray-300 text-gray-700 hover:bg-gray-50"
+                    onClick={() => setTheme("dark")}
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg border transition-colors ${
+                      theme === "dark"
+                        ? "border-blue-500 bg-blue-50 dark:bg-blue-600/20 text-blue-600 dark:text-blue-400"
+                        : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/30"
                     }`}
                   >
                     <FiMoon className="h-4 w-4" />
@@ -261,75 +246,63 @@ export default function SettingsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Language
-                </label>
-                <select
+                <ThemedLabel>Language</ThemedLabel>
+                <ThemedSelect
                   value={settings.language}
                   onChange={(e) =>
                     handleSettingChange("language", e.target.value)
                   }
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 >
                   <option value="en">English</option>
                   <option value="es">Spanish</option>
                   <option value="fr">French</option>
                   <option value="de">German</option>
-                </select>
+                </ThemedSelect>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Timezone
-                </label>
-                <select
+                <ThemedLabel>Timezone</ThemedLabel>
+                <ThemedSelect
                   value={settings.timezone}
                   onChange={(e) =>
                     handleSettingChange("timezone", e.target.value)
                   }
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 >
                   <option value="UTC-8">Pacific Time (UTC-8)</option>
                   <option value="UTC-5">Eastern Time (UTC-5)</option>
                   <option value="UTC+0">Greenwich Mean Time (UTC+0)</option>
                   <option value="UTC+1">Central European Time (UTC+1)</option>
-                </select>
+                </ThemedSelect>
               </div>
             </div>
-          </div>
+          </ThemedCard>
 
           {/* Privacy Settings */}
-          <div
-            id="privacy"
-            className="bg-gray-800/70 backdrop-blur-md rounded-lg shadow-sm border border-gray-700 p-6"
-          >
-            <h2 className="text-lg font-semibold text-white mb-4">
+          <ThemedCard id="privacy" className="p-6">
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               Privacy & Security
             </h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Profile Visibility
-                </label>
-                <select
+                <ThemedLabel>Profile Visibility</ThemedLabel>
+                <ThemedSelect
                   value={settings.profileVisibility}
                   onChange={(e) =>
                     handleSettingChange("profileVisibility", e.target.value)
                   }
-                  className="w-full rounded-lg border border-gray-600 bg-gray-700/50 px-3 py-2 text-sm text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 >
                   <option value="public">Public</option>
                   <option value="team">Team Only</option>
                   <option value="private">Private</option>
-                </select>
+                </ThemedSelect>
               </div>
 
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-medium text-gray-900">
+                  <h3 className="text-sm font-medium text-gray-900 dark:text-white">
                     Activity Tracking
                   </h3>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
                     Allow tracking of your activity for analytics
                   </p>
                 </div>
@@ -342,11 +315,11 @@ export default function SettingsPage() {
                     }
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
               </div>
             </div>
-          </div>
+          </ThemedCard>
         </div>
       </div>
     </div>

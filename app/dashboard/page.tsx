@@ -72,7 +72,7 @@ export default function Dashboard() {
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-end">
-        <div className="flex items-center space-x-2 text-sm text-gray-300">
+        <div className="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-300">
           <FiCalendar className="h-4 w-4" />
           <span>
             {new Date().toLocaleDateString("en-US", {
@@ -90,14 +90,16 @@ export default function Dashboard() {
         {statCards.map((stat, index) => (
           <div
             key={index}
-            className="bg-gray-800/70 backdrop-blur-md rounded-lg shadow-sm border border-gray-700 p-6"
+            className="bg-white dark:bg-gray-800/70 backdrop-blur-md rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6"
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                   {stat.title}
                 </p>
-                <p className="text-3xl font-bold text-white">{stat.value}</p>
+                <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                  {stat.value}
+                </p>
               </div>
               <div className={`${stat.color} rounded-lg p-3`}>
                 <stat.icon className="h-6 w-6 text-white" />
@@ -118,15 +120,15 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Tasks */}
-        <div className="bg-gray-800/70 backdrop-blur-md rounded-lg shadow-sm border border-gray-700 p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">
+        <div className="bg-white dark:bg-gray-800/70 backdrop-blur-md rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             Recent Tasks
           </h2>
           <div className="space-y-3">
             {recentTasks.map((task) => (
               <div
                 key={task.id}
-                className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg"
+                className="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-700/30 rounded-lg border border-gray-200 dark:border-gray-600/30"
               >
                 <div className="flex items-center space-x-3">
                   <div
@@ -144,15 +146,15 @@ export default function Dashboard() {
                     }`}
                   ></div>
                   <div>
-                    <p className="text-sm font-medium text-white">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white">
                       {task.content}
                     </p>
-                    <p className="text-xs text-gray-400">
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
                       {task.priority} Priority
                     </p>
                   </div>
                 </div>
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-gray-500 dark:text-gray-400">
                   {Object.keys(initialBoardData.columns).find((colId) =>
                     initialBoardData.columns[colId].taskIds.includes(task.id)
                   )}
@@ -163,30 +165,32 @@ export default function Dashboard() {
         </div>
 
         {/* Upcoming Deadlines */}
-        <div className="bg-gray-800/70 backdrop-blur-md rounded-lg shadow-sm border border-gray-700 p-6">
-          <h2 className="text-lg font-semibold text-white mb-4">
+        <div className="bg-white dark:bg-gray-800/70 backdrop-blur-md rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             Upcoming Deadlines
           </h2>
           <div className="space-y-3">
             {upcomingDeadlines.map((task) => (
               <div
                 key={task.id}
-                className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg"
+                className="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-700/30 rounded-lg border border-gray-200 dark:border-gray-600/30"
               >
                 <div>
-                  <p className="text-sm font-medium text-white">
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">
                     {task.content}
                   </p>
-                  <p className="text-xs text-gray-400">Due: {task.endDate}</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Due: {task.endDate}
+                  </p>
                 </div>
                 <div className="text-right">
                   <span
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${
                       task.priority === "Urgent"
-                        ? "bg-red-100 text-red-800"
+                        ? "bg-red-100 dark:bg-red-500/20 text-red-800 dark:text-red-400 border-red-200 dark:border-red-500/30"
                         : task.priority === "High"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-blue-100 text-blue-800"
+                          ? "bg-yellow-100 dark:bg-yellow-500/20 text-yellow-800 dark:text-yellow-400 border-yellow-200 dark:border-yellow-500/30"
+                          : "bg-blue-100 dark:bg-blue-500/20 text-blue-800 dark:text-blue-400 border-blue-200 dark:border-blue-500/30"
                     }`}
                   >
                     {task.priority}

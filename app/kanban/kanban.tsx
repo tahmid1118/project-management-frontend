@@ -183,14 +183,14 @@ const KanbanBoard: React.FC = () => {
 
   if (isLoading || !isMounted) {
     return (
-      <div className="h-[600px] flex items-center justify-center text-white">
+      <div className="h-[600px] flex items-center justify-center text-gray-900 dark:text-white">
         <div className="loader">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="h-full bg-gradient-to-r from-[#432c52] via-[#2a3b36] to-[#432c52] p-6">
+    <div className="h-full bg-gray-100 dark:bg-gradient-to-r dark:from-[#432c52] dark:via-[#2a3b36] dark:to-[#432c52] p-6">
       <DragDropContext onDragEnd={moveTask}>
         <div className="flex gap-4 overflow-x-auto h-full">
           {boardData.columnOrder.map((columnId) => {
@@ -203,9 +203,9 @@ const KanbanBoard: React.FC = () => {
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    className="flex-1 min-w-[300px] max-h-[77vh] bg-gray-800/70 rounded-lg p-4 flex flex-col"
+                    className="flex-1 min-w-[300px] max-h-[77vh] bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm rounded-lg p-4 flex flex-col border border-gray-300/50 dark:border-gray-700 shadow-md"
                   >
-                    <h2 className="text-xl font-semibold text-white mb-4">
+                    <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
                       {column.title}
                     </h2>
 
@@ -221,28 +221,28 @@ const KanbanBoard: React.FC = () => {
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
-                              className="bg-white/10 backdrop-blur-md text-white rounded-lg p-4 shadow-sm relative"
+                              className="bg-white dark:bg-white/10 backdrop-blur-md text-gray-800 dark:text-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow relative border border-gray-200 dark:border-gray-600/30"
                             >
                               <div className="flex items-start justify-between gap-3 mb-3">
-                                <span className="text-sm font-semibold flex-1 truncate">
+                                <span className="text-sm font-semibold flex-1 truncate text-gray-900 dark:text-white">
                                   {task.content}
                                 </span>
                                 <div className="flex items-center gap-2">
                                   <FiEdit2
-                                    className="h-4 w-4 text-gray-300 hover:text-blue-400 cursor-pointer"
+                                    className="h-4 w-4 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors"
                                     onClick={() => {
                                       // TODO: Implement task editing functionality
                                       console.log("Edit task:", task.id);
                                     }}
                                   />
                                   <FiTrash
-                                    className="h-4 w-4 text-gray-300 hover:text-red-400 cursor-pointer"
+                                    className="h-4 w-4 text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 cursor-pointer transition-colors"
                                     onClick={() => deleteTask(task.id)}
                                   />
                                 </div>
                               </div>
 
-                              <div className="flex items-center gap-1 text-gray-300 text-xs mb-3">
+                              <div className="flex items-center gap-1 text-gray-700 dark:text-gray-300 text-xs mb-3">
                                 <FiAlignLeft
                                   className="h-4 w-4 cursor-pointer"
                                   onClick={(e) =>
@@ -255,7 +255,7 @@ const KanbanBoard: React.FC = () => {
                                 />
                               </div>
 
-                              <div className="flex flex-wrap items-center gap-3 text-gray-200 text-xs">
+                              <div className="flex flex-wrap items-center gap-3 text-gray-800 dark:text-gray-200 text-xs">
                                 {/* Assignee */}
                                 <div
                                   className="flex items-center gap-2 cursor-pointer"
@@ -278,7 +278,7 @@ const KanbanBoard: React.FC = () => {
                                       }
                                     </span>
                                   ) : (
-                                    <span className="text-xs text-gray-400">
+                                    <span className="text-xs text-gray-500 dark:text-gray-400">
                                       Add
                                     </span>
                                   )}
@@ -286,7 +286,7 @@ const KanbanBoard: React.FC = () => {
 
                                 {/* Calendar */}
                                 <div
-                                  className="flex items-center gap-1 text-blue-300 cursor-pointer"
+                                  className="flex items-center gap-1 text-blue-600 dark:text-blue-300 cursor-pointer hover:text-blue-700 dark:hover:text-blue-200 transition-colors"
                                   onClick={(e) =>
                                     setOpenPopover({
                                       id: task.id,
@@ -297,11 +297,13 @@ const KanbanBoard: React.FC = () => {
                                 >
                                   <FiCalendar className="h-4 w-4" />
                                   {task.startDate ? (
-                                    <span>
+                                    <span className="font-medium">
                                       {task.startDate} → {task.endDate}
                                     </span>
                                   ) : (
-                                    "Set Due Date"
+                                    <span className="text-gray-500 dark:text-gray-400">
+                                      Set Due Date
+                                    </span>
                                   )}
                                 </div>
 
@@ -316,15 +318,29 @@ const KanbanBoard: React.FC = () => {
                                     })
                                   }
                                 >
-                                  <FiFlag className="h-4 w-4" />
+                                  <FiFlag
+                                    className={`h-4 w-4 ${
+                                      task.priority === "Urgent"
+                                        ? "text-red-600 dark:text-red-400"
+                                        : task.priority === "High"
+                                          ? "text-orange-600 dark:text-yellow-400"
+                                          : task.priority === "Medium"
+                                            ? "text-blue-600 dark:text-blue-400"
+                                            : "text-gray-500 dark:text-gray-400"
+                                    }`}
+                                  />
                                   {task.priority &&
                                     task.priority !== "Clear" && (
                                       <span
-                                        className={
-                                          priorities.find(
-                                            (p) => p.label === task.priority
-                                          )?.color
-                                        }
+                                        className={`font-medium ${
+                                          task.priority === "Urgent"
+                                            ? "text-red-700 dark:text-red-400"
+                                            : task.priority === "High"
+                                              ? "text-orange-700 dark:text-yellow-400"
+                                              : task.priority === "Medium"
+                                                ? "text-blue-700 dark:text-blue-400"
+                                                : "text-gray-700 dark:text-gray-300"
+                                        }`}
                                       >
                                         {task.priority}
                                       </span>
@@ -336,7 +352,7 @@ const KanbanBoard: React.FC = () => {
                                 <Portal>
                                   <div
                                     ref={portalRef}
-                                    className="absolute z-50 rounded-lg shadow-lg p-2 bg-gray-900 text-white w-64"
+                                    className="absolute z-50 rounded-lg shadow-xl p-3 bg-white dark:bg-gray-900 text-gray-900 dark:text-white w-64 border border-gray-300 dark:border-gray-700"
                                     style={{
                                       top:
                                         openPopover.rect.bottom +
@@ -351,7 +367,7 @@ const KanbanBoard: React.FC = () => {
                                         {dummyMembers.map((member) => (
                                           <div
                                             key={member.id}
-                                            className="flex items-center justify-between px-2 py-1 text-sm hover:bg-gray-700 rounded"
+                                            className="flex items-center justify-between px-2 py-1.5 text-sm hover:bg-blue-50 dark:hover:bg-gray-700 rounded transition-colors"
                                           >
                                             <span>{member.full_name}</span>
                                             <button
@@ -373,7 +389,7 @@ const KanbanBoard: React.FC = () => {
                                       priorities.map((p) => (
                                         <div
                                           key={p.label}
-                                          className="flex items-center gap-2 p-2 hover:bg-gray-700 cursor-pointer rounded"
+                                          className="flex items-center gap-2 p-2 hover:bg-blue-50 dark:hover:bg-gray-700 cursor-pointer rounded transition-colors"
                                           onClick={() => {
                                             updateTaskDetails(task.id, {
                                               priority: p.label,
@@ -424,7 +440,7 @@ const KanbanBoard: React.FC = () => {
                                           }}
                                         />
                                         <button
-                                          className="bg-blue-500 hover:bg-blue-600 text-white text-sm py-1 px-3 rounded self-end"
+                                          className="bg-blue-600 hover:bg-blue-700 text-white text-sm py-1 px-3 rounded self-end"
                                           onClick={() => {
                                             if (tempDates) {
                                               updateTaskDetails(task.id, {
