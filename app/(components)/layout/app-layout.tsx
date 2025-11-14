@@ -13,8 +13,8 @@ export default function AppLayout({ children }: AppLayoutProps) {
   const pathname = usePathname();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-  // Don't show layout on login page
-  if (pathname === "/") {
+  // Don't show layout on login/signup pages
+  if (pathname === "/" || pathname === "/login" || pathname === "/signup") {
     return <>{children}</>;
   }
 

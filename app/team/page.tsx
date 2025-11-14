@@ -49,13 +49,13 @@ export default function TeamPage() {
 
         {/* Team Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4">
+          <div className="bg-white dark:bg-gray-700/30 rounded-lg p-4 border border-gray-200 dark:border-gray-600/30 shadow-sm">
             <div className="flex items-center">
-              <div className="bg-blue-500 rounded-lg p-2 mr-3">
+              <div className="bg-blue-500 rounded-lg p-2 mr-3 shadow-md">
                 <FiUser className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                <p className="text-xs font-medium text-gray-600 dark:text-gray-400">
                   Total Members
                 </p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -65,13 +65,13 @@ export default function TeamPage() {
             </div>
           </div>
 
-          <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4">
+          <div className="bg-white dark:bg-gray-700/30 rounded-lg p-4 border border-gray-200 dark:border-gray-600/30 shadow-sm">
             <div className="flex items-center">
-              <div className="bg-purple-500 rounded-lg p-2 mr-3">
+              <div className="bg-purple-500 rounded-lg p-2 mr-3 shadow-md">
                 <FiUser className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                <p className="text-xs font-medium text-gray-600 dark:text-gray-400">
                   Active Members
                 </p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -81,13 +81,13 @@ export default function TeamPage() {
             </div>
           </div>
 
-          <div className="bg-gray-50 dark:bg-gray-700/30 rounded-lg p-4">
+          <div className="bg-white dark:bg-gray-700/30 rounded-lg p-4 border border-gray-200 dark:border-gray-600/30 shadow-sm">
             <div className="flex items-center">
-              <div className="bg-blue-500 rounded-lg p-2 mr-3">
+              <div className="bg-blue-500 rounded-lg p-2 mr-3 shadow-md">
                 <FiUser className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p className="text-xs font-medium text-gray-500 dark:text-gray-400">
+                <p className="text-xs font-medium text-gray-600 dark:text-gray-400">
                   Avg Tasks/Member
                 </p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white">

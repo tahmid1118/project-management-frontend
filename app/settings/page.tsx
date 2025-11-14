@@ -1,17 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { FiBell, FiLock, FiMoon, FiSave, FiSun, FiUser } from "react-icons/fi";
+import { FiBell, FiLock, FiSave, FiSun, FiUser } from "react-icons/fi";
 import {
   ThemedCard,
   ThemedInput,
   ThemedLabel,
   ThemedSelect,
 } from "../(components)/layout/themed-container";
-import { useTheme } from "../context/ThemeContext";
-
 export default function SettingsPage() {
-  const { theme, setTheme } = useTheme();
   const [settings, setSettings] = useState({
     // Profile settings
     fullName: "John Doe",
@@ -217,32 +214,12 @@ export default function SettingsPage() {
               Appearance
             </h2>
             <div className="space-y-4">
-              <div>
-                <ThemedLabel>Theme</ThemedLabel>
-                <div className="flex space-x-4">
-                  <button
-                    onClick={() => setTheme("light")}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg border transition-colors ${
-                      theme === "light"
-                        ? "border-blue-500 bg-blue-50 dark:bg-blue-600/20 text-blue-600 dark:text-blue-400"
-                        : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/30"
-                    }`}
-                  >
-                    <FiSun className="h-4 w-4" />
-                    <span>Light</span>
-                  </button>
-                  <button
-                    onClick={() => setTheme("dark")}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg border transition-colors ${
-                      theme === "dark"
-                        ? "border-blue-500 bg-blue-50 dark:bg-blue-600/20 text-blue-600 dark:text-blue-400"
-                        : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/30"
-                    }`}
-                  >
-                    <FiMoon className="h-4 w-4" />
-                    <span>Dark</span>
-                  </button>
-                </div>
+              <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  💡 <strong>Tip:</strong> You can now toggle between light and
+                  dark themes using the theme button in the navbar (top right
+                  corner).
+                </p>
               </div>
 
               <div>
