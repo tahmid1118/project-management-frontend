@@ -155,7 +155,7 @@ const Login: React.FC = () => {
               <FacebookIcon />
             </div>
             <p className="text-center text-gray-400 mt-4">
-              <a href="/pmf/signup" className="hover:underline">
+              <a href="/signup" className="hover:underline">
                 Create an account
               </a>
             </p>

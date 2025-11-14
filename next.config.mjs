@@ -1,12 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/",
   reactStrictMode: false,
   async redirects() {
     return [
       {
         source: "/",
-        destination: "/pmf/login",
+        destination: "/login",
         permanent: true,
       },
     ];
