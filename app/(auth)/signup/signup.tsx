@@ -82,7 +82,7 @@ const Signup: React.FC = () => {
     },
   });
 
-  const onSubmit = (data: SignupFormInputs) => {
+  const onSubmit = (_: SignupFormInputs) => {
     setLoading(true);
     setSignupError(null);
 
