@@ -5,10 +5,9 @@ import { CalendarIcon } from "lucide-react";
 import * as React from "react";
 import { DateRange } from "react-day-picker";
 
-import { usePathname } from "next/navigation";
 import { toast } from "sonner"; // Import toast for displaying error messages
-import { useTranslation } from "../../app/i18n/client";
-import { cn } from "../../lib/utils";
+// import { useTranslation } from "../../../app/i18n/client";
+import { cn } from "../../../lib/utils";
 import { Button } from "./button";
 import { Calendar } from "./calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
@@ -24,9 +23,10 @@ export function CalendarDateRangePicker({
   defaultRange,
 }: CalendarDateRangePickerProps) {
   const [date, setDate] = React.useState<DateRange | undefined>(defaultRange);
-  const pathname = usePathname();
-  const lng = pathname.split("/")[1];
-  const { t } = useTranslation(lng, "Language");
+  // const pathname = usePathname();
+  // const lng = pathname.split("/")[1];
+  // const { t } = useTranslation(lng, "Language");
+  const t = (key: string) => key; // Fallback translation function
   // Function to generate an array of dates in the selected range
   const getDateRangeArray = (startDate: Date, endDate: Date): string[] => {
     const dates = [];

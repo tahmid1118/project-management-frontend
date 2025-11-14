@@ -30,11 +30,11 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
 
   return (
     <div
-      className={`flex h-screen flex-col bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ${
+      className={`flex h-screen flex-col bg-slate-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ${
         isCollapsed ? "w-16" : "w-64"
       }`}
     >
-      <div className="flex h-16 items-center justify-between border-b border-gray-200 dark:border-gray-700 px-4">
+      <div className="flex h-16 items-center justify-between border-b border-gray-200 dark:border-gray-700 px-4 bg-white/50 dark:bg-gray-800/50">
         {!isCollapsed && (
           <h1 className="text-xl font-bold text-gray-900 dark:text-white">
             ProjectFlow

@@ -38,8 +38,9 @@ export const themeClasses = {
   },
 };
 
-export const getThemeClass = (key: string) => {
+export const getThemeClass = (key: string): string => {
   const keys = key.split(".");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let value: any = themeClasses;
 
   for (const k of keys) {

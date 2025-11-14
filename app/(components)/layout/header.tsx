@@ -33,7 +33,7 @@ export default function Header({}: HeaderProps) {
   };
 
   return (
-    <header className="bg-white dark:bg-gray-800/70 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 px-6 py-4">
+    <header className="bg-white/80 dark:bg-gray-800/70 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 px-6 py-4">
       <div className="flex items-center justify-between">
         <div className="flex-1">{/* Empty space for left side */}</div>
 

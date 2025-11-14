@@ -190,7 +190,7 @@ const KanbanBoard: React.FC = () => {
   }
 
   return (
-    <div className="h-full bg-gray-100 dark:bg-gradient-to-r dark:from-[#432c52] dark:via-[#2a3b36] dark:to-[#432c52] p-6">
+    <div className="h-full bg-slate-100 dark:bg-gradient-to-r dark:from-[#432c52] dark:via-[#2a3b36] dark:to-[#432c52] p-6">
       <DragDropContext onDragEnd={moveTask}>
         <div className="flex gap-4 overflow-x-auto h-full">
           {boardData.columnOrder.map((columnId) => {
