@@ -1,5 +1,7 @@
 "use client";
 
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
 import { useState } from "react";
 import {
   FiCalendar,
@@ -11,21 +13,38 @@ import {
   FiTrash,
   FiUser,
 } from "react-icons/fi";
-import { dummyMembers, initialBoardData, priorities } from "../data/data";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../(components)/ui/dialog";
+import { dummyMembers, initialBoardData, priorities, Task } from "../data/data";
+
+const { RangePicker } = DatePicker;
 
 export default function TasksPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPriority, setSelectedPriority] = useState("All");
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [completedTasks, setCompletedTasks] = useState<Set<string>>(new Set());
+  const [tasks, setTasks] = useState(Object.values(initialBoardData.tasks));
   const [sortBy, setSortBy] = useState<
     "priority" | "status" | "assignee" | "none"
   >("priority");
   const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(
     new Set()
   );
-
-  const allTasks = Object.values(initialBoardData.tasks);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [newTask, setNewTask] = useState<Partial<Task>>({
+    content: "",
+    description: "",
+    priority: "Medium",
+    assignees: [],
+    startDate: "",
+    endDate: "",
+  });
 
   const getTaskStatus = (taskId: string) => {
     if (completedTasks.has(taskId)) return "Done";
@@ -36,7 +55,7 @@ export default function TasksPage() {
     );
   };
 
-  const filteredTasks = allTasks.filter((task) => {
+  const filteredTasks = tasks.filter((task) => {
     const matchesSearch = task.content
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
@@ -77,10 +96,44 @@ export default function TasksPage() {
   };
 
   const deleteTask = (taskId: string) => {
+    setTasks((prev) => prev.filter((task) => task.id !== taskId));
     setCompletedTasks((prev) => {
       const newSet = new Set(prev);
       newSet.delete(taskId);
       return newSet;
+    });
+  };
+
+  const clearCompletedTasks = () => {
+    setTasks((prev) => prev.filter((task) => !completedTasks.has(task.id)));
+    setCompletedTasks(new Set());
+  };
+
+  const addNewTask = () => {
+    if (!newTask.content?.trim()) {
+      return;
+    }
+
+    const taskId = `task-${Date.now()}`;
+    const task: Task = {
+      id: taskId,
+      content: newTask.content,
+      description: newTask.description || "",
+      priority: newTask.priority || "Medium",
+      assignees: newTask.assignees || [],
+      startDate: newTask.startDate || "",
+      endDate: newTask.endDate || "",
+    };
+
+    setTasks((prev) => [...prev, task]);
+    setIsDialogOpen(false);
+    setNewTask({
+      content: "",
+      description: "",
+      priority: "Medium",
+      assignees: [],
+      startDate: "",
+      endDate: "",
     });
   };
 
@@ -195,7 +248,7 @@ export default function TasksPage() {
       {completedCount > 0 && (
         <div className="flex justify-end">
           <button
-            onClick={() => setCompletedTasks(new Set())}
+            onClick={clearCompletedTasks}
             className="flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
           >
             <FiTrash className="h-4 w-4" />
@@ -299,10 +352,161 @@ export default function TasksPage() {
                 {completedCount} of {totalCount} completed (
                 {completionPercentage}%)
               </span>
-              <button className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition-colors text-sm">
-                <FiPlus className="h-4 w-4" />
-                <span>New Task</span>
-              </button>
+              <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <DialogTrigger asChild>
+                  <button className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition-colors text-sm">
+                    <FiPlus className="h-4 w-4" />
+                    <span>New Task</span>
+                  </button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[500px] bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+                  <DialogHeader>
+                    <DialogTitle className="text-xl font-semibold">
+                      Create New Task
+                    </DialogTitle>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    {/* Task Title */}
+                    <div>
+                      <label className="block text-sm font-medium mb-2">
+                        Task Title *
+                      </label>
+                      <input
+                        type="text"
+                        value={newTask.content || ""}
+                        onChange={(e) =>
+                          setNewTask({ ...newTask, content: e.target.value })
+                        }
+                        placeholder="Enter task title..."
+                        className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700/50 py-2 px-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    {/* Description */}
+                    <div>
+                      <label className="block text-sm font-medium mb-2">
+                        Description
+                      </label>
+                      <textarea
+                        value={newTask.description || ""}
+                        onChange={(e) =>
+                          setNewTask({
+                            ...newTask,
+                            description: e.target.value,
+                          })
+                        }
+                        placeholder="Enter task description..."
+                        rows={3}
+                        className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700/50 py-2 px-3 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      />
+                    </div>
+
+                    {/* Priority */}
+                    <div>
+                      <label className="block text-sm font-medium mb-2">
+                        Priority
+                      </label>
+                      <select
+                        value={newTask.priority || "Medium"}
+                        onChange={(e) =>
+                          setNewTask({ ...newTask, priority: e.target.value })
+                        }
+                        className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700/50 py-2 px-3 text-sm text-gray-900 dark:text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      >
+                        {priorities.map((priority) => (
+                          <option key={priority.label} value={priority.label}>
+                            {priority.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Assignee */}
+                    <div>
+                      <label className="block text-sm font-medium mb-2">
+                        Assign To
+                      </label>
+                      <select
+                        value={newTask.assignees?.[0] || ""}
+                        onChange={(e) =>
+                          setNewTask({
+                            ...newTask,
+                            assignees: e.target.value
+                              ? [parseInt(e.target.value)]
+                              : [],
+                          })
+                        }
+                        className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700/50 py-2 px-3 text-sm text-gray-900 dark:text-white focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      >
+                        <option value="">Unassigned</option>
+                        {dummyMembers.map((member) => (
+                          <option key={member.id} value={member.user_id}>
+                            {member.full_name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Date Range */}
+                    <div>
+                      <label className="block text-sm font-medium mb-2">
+                        Date Range
+                      </label>
+                      <RangePicker
+                        className="w-full"
+                        format="YYYY-MM-DD"
+                        value={
+                          newTask.startDate && newTask.endDate
+                            ? [dayjs(newTask.startDate), dayjs(newTask.endDate)]
+                            : null
+                        }
+                        onChange={(dates) => {
+                          if (dates && dates[0] && dates[1]) {
+                            setNewTask({
+                              ...newTask,
+                              startDate: dates[0].format("YYYY-MM-DD"),
+                              endDate: dates[1].format("YYYY-MM-DD"),
+                            });
+                          } else {
+                            setNewTask({
+                              ...newTask,
+                              startDate: "",
+                              endDate: "",
+                            });
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <button
+                      onClick={() => {
+                        setIsDialogOpen(false);
+                        setNewTask({
+                          content: "",
+                          description: "",
+                          priority: "Medium",
+                          assignees: [],
+                          startDate: "",
+                          endDate: "",
+                        });
+                      }}
+                      className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={addNewTask}
+                      disabled={!newTask.content?.trim()}
+                      className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Create Task
+                    </button>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
 
