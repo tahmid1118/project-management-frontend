@@ -192,18 +192,26 @@ const KanbanBoard: React.FC = () => {
   return (
     <div className="h-full bg-slate-100 dark:bg-gradient-to-r dark:from-[#432c52] dark:via-[#2a3b36] dark:to-[#432c52] p-6">
       <DragDropContext onDragEnd={moveTask}>
-        <div className="flex gap-4 overflow-x-auto h-full">
+        <div
+          className="flex gap-4 overflow-x-auto h-full"
+          style={{ willChange: "auto" }}
+        >
           {boardData.columnOrder.map((columnId) => {
             const column = boardData.columns[columnId];
             const tasks = column.taskIds.map((id) => boardData.tasks[id]);
 
             return (
               <Droppable droppableId={columnId} key={columnId}>
-                {(provided) => (
+                {(provided, snapshot) => (
                   <div
                     {...provided.droppableProps}
                     ref={provided.innerRef}
-                    className="flex-1 min-w-[300px] max-h-[77vh] bg-white/80 dark:bg-gray-800/70 backdrop-blur-sm rounded-lg p-4 flex flex-col border border-gray-300/50 dark:border-gray-700 shadow-md"
+                    className={`flex-1 min-w-[300px] max-h-[77vh] bg-white/80 dark:bg-gray-800/50 rounded-lg p-4 flex flex-col border shadow-md ${
+                      snapshot.isDraggingOver
+                        ? "border-blue-500 dark:border-blue-400 border-2"
+                        : "border-gray-300/50 dark:border-gray-700"
+                    }`}
+                    style={{ willChange: "auto" }}
                   >
                     <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
                       {column.title}
@@ -216,12 +224,16 @@ const KanbanBoard: React.FC = () => {
                           index={index}
                           key={task.id}
                         >
-                          {(provided) => (
+                          {(provided, snapshot) => (
                             <div
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
-                              className="bg-white dark:bg-white/10 backdrop-blur-md text-gray-800 dark:text-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow relative border border-gray-200 dark:border-gray-600/30"
+                              className={`bg-white dark:bg-white/10 text-gray-800 dark:text-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow relative border border-gray-200 dark:border-gray-600/30 ${
+                                snapshot.isDragging
+                                  ? "shadow-2xl opacity-90"
+                                  : "backdrop-blur-md"
+                              }`}
                             >
                               <div className="flex items-start justify-between gap-3 mb-3">
                                 <span className="text-sm font-semibold flex-1 truncate text-gray-900 dark:text-white">
